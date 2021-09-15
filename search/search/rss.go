@@ -104,6 +104,9 @@ func rssSearch(uid, term, engine, uri string) ([]Result, error) {
 			}
 
 			// Save this document into the cache.
+			for i := range d.Channel.Items {
+				d.Channel.Items[i].Description = strings.ToLower(d.Channel.Items[i].Description)
+			}
 			cache.Set(uri, d, expiration)
 
 			log.Println("reloaded cache", uri)
@@ -113,10 +116,11 @@ func rssSearch(uid, term, engine, uri string) ([]Result, error) {
 
 	// Create an empty slice of results.
 	results := []Result{}
+	term = strings.ToLower(term)
 
 	// Capture the data we need for our results if we find the search term.
 	for _, item := range d.Channel.Items {
-		if strings.Contains(strings.ToLower(item.Description), strings.ToLower(term)) {
+		if strings.Contains(item.Description, term) {
 			results = append(results, Result{
 				Engine:  engine,
 				Title:   item.Title,
