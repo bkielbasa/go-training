@@ -35,19 +35,14 @@ func (h httpHandler) searchHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	results, fastest, err := h.serv.Search(r.Context(), req.Term)
+	result, err := h.serv.Search(r.Context(), req.Term)
 	if err != nil {
 		log.Println(err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	resp := searchResponse{
-		Source:  fastest,
-		Results: results,
-	}
-
-	if body, err = json.Marshal(resp); err != nil {
+	if body, err = json.Marshal(result); err != nil {
 		log.Println(err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
