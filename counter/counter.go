@@ -1,9 +1,6 @@
 package counter
 
-import "sync"
-
 type counter struct {
-	m     sync.Mutex
 	count int
 }
 
@@ -11,22 +8,16 @@ var v int
 
 //go:noinline
 func (c *counter) Inc() {
-	c.m.Lock()
 	c.count++
-	c.m.Unlock()
 }
 
 //go:noinline
 func (c *counter) Dec() {
-	c.m.Lock()
 	c.count--
-	c.m.Unlock()
 }
 
 //go:noinline
 func (c *counter) Val() int {
-	c.m.Lock()
-	defer c.m.Unlock()
 	return c.count
 }
 
