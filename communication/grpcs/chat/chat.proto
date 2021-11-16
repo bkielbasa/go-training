@@ -1,0 +1,27 @@
+/* language version */
+syntax = "proto3";
+option go_package = "chat/shared";
+
+/* message definitions */
+message JoinChatRequest {
+  string user = 1;
+}
+
+message SendMessageRequest {
+  string message = 1;
+  string user = 2;
+}
+
+message MessageResponse {
+  string message = 1;
+  string user = 2;
+  int32 timestamp = 3;
+}
+
+message EmptyResponse {}
+
+/* service with rpc method signatures */
+service ChatService {
+  rpc joinChat(JoinChatRequest) returns (stream MessageResponse) {}
+  rpc sendMessage(SendMessageRequest) returns (EmptyResponse) {}
+}
