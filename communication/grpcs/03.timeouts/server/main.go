@@ -7,6 +7,7 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"math/rand"
 	"net"
 	"time"
 
@@ -17,6 +18,7 @@ import (
 
 var (
 	port = flag.Int("port", 50051, "The server port")
+	r    = rand.New(rand.NewSource(99))
 )
 
 type server struct {
@@ -60,6 +62,9 @@ func (s *server) JoinChat(in *pb.JoinChatRequest, srv pb.ChatService_JoinChatSer
 }
 
 func (s *server) SendMessage(ctx context.Context, req *pb.SendMessageRequest) (*pb.EmptyResponse, error) {
+	if r.Intn(2) == 0 {
+		time.Sleep(time.Hour)
+	}
 	log.Printf("User %s said: %s", req.User, req.Message)
 
 	for user, conn := range s.conns {
