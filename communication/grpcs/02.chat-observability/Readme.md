@@ -26,9 +26,9 @@ It will run Jaeger in Docker in background.
 
 Use this code while initializing the server
 
-```
-	grpc.UnaryInterceptor(otelgrpc.UnaryServerInterceptor()),
-	grpc.StreamInterceptor(otelgrpc.StreamServerInterceptor()),
+```go
+grpc.UnaryInterceptor(otelgrpc.UnaryServerInterceptor()),
+grpc.StreamInterceptor(otelgrpc.StreamServerInterceptor()),
 ```
 </details>
 
@@ -37,7 +37,7 @@ Use this code while initializing the server
 
 Use this code while initializing the client
 
-```
+```go
 grpc.WithUnaryInterceptor(otelgrpc.UnaryClientInterceptor()),
 grpc.WithStreamInterceptor(otelgrpc.StreamClientInterceptor()),
 ```
