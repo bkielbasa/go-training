@@ -39,3 +39,9 @@ service ChatService {
 go install google.golang.org/protobuf/cmd/protoc-gen-go
 go install google.golang.org/grpc/cmd/protoc-gen-go-grpc
 ```
+
+## Generate source code
+
+```sh
+protoc --go_out=./shared/ --go_opt=paths=source_relative --go-grpc_out=./shared/ --go-grpc_opt=paths=source_relative ./chat.proto
+```
