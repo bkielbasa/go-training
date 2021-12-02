@@ -9,7 +9,7 @@ Add tracing to the chat application. Use opentelemetry.
 To run Jaeger in a docker instance run this command:
 
 ```
-make jaeger
+make jeager
 ```
 
 or
