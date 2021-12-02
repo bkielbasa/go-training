@@ -38,6 +38,17 @@ service ChatService {
 ```bash
 go install google.golang.org/protobuf/cmd/protoc-gen-go
 go install google.golang.org/grpc/cmd/protoc-gen-go-grpc
+
+# or
+
+sudo apt install protobuf-compiler
+```
+
+Don't forget to add go bin path to your $PATH
+
+```sh
+# put it in your .bashrc
+export PATH=$PATH:/path/to/go/bin
 ```
 
 ## Generate source code
