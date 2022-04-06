@@ -30,8 +30,8 @@ func (s *server) JoinChat(in *pb.JoinChatRequest, srv pb.ChatService_JoinChatSer
 
 	s.conns[in.User] = conn
 	defer func() {
-		close(conn)
 		delete(s.conns, in.User)
+		close(conn)
 		log.Printf("disconnecting %s", in.User)
 	}()
 
@@ -55,8 +55,6 @@ func (s *server) JoinChat(in *pb.JoinChatRequest, srv pb.ChatService_JoinChatSer
 			}
 		}
 	}
-
-	return nil
 }
 
 func (s *server) SendMessage(ctx context.Context, req *pb.SendMessageRequest) (*pb.EmptyResponse, error) {

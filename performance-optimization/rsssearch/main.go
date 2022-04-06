@@ -29,6 +29,7 @@ func main() {
 			},
 		},
 	}
+
 	http.HandleFunc("/search", handler.searchHandler)
 	err := http.ListenAndServe(":8080", nil)
 	fmt.Println(err)

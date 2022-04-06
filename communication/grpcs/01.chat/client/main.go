@@ -62,7 +62,7 @@ func main() {
 	go func() {
 		scanner := bufio.NewScanner(os.Stdin)
 		for scanner.Scan() {
-			_, err := c.SendMessage(context.Background(), &pb.SendMessageRequest{
+			_, err := c.SendMessage(ctx, &pb.SendMessageRequest{
 				User:    *user,
 				Message: scanner.Text(),
 			})

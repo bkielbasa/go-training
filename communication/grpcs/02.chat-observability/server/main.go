@@ -24,17 +24,24 @@ var (
 
 type server struct {
 	pb.UnimplementedChatServiceServer
-	conns map[string]chan *pb.MessageResponse
+	conns map[string]chan MessageResponse
+}
+
+type MessageResponse struct {
+	Message   string
+	User      string
+	Timestamp int32
+	done chan struct{}
 }
 
 func (s *server) JoinChat(in *pb.JoinChatRequest, srv pb.ChatService_JoinChatServer) error {
 	log.Printf("User %v joined", in.User)
-	conn := make(chan *pb.MessageResponse)
+	conn := make(chan MessageResponse)
 
 	s.conns[in.User] = conn
 	defer func() {
-		close(conn)
 		delete(s.conns, in.User)
+		close(conn)
 		log.Printf("disconnecting %s", in.User)
 	}()
 
@@ -43,7 +50,13 @@ func (s *server) JoinChat(in *pb.JoinChatRequest, srv pb.ChatService_JoinChatSer
 		case <-srv.Context().Done():
 			return srv.Context().Err()
 		case response := <-conn:
-			if status, ok := status.FromError(srv.Send(response)); ok {
+			msg := &pb.MessageResponse{
+				User:      response.User,
+				Message:   response.Message,
+				Timestamp: int32(time.Now().Unix()),
+			}
+
+			if status, ok := status.FromError(srv.Send(msg)); ok {
 				switch status.Code() {
 				case codes.OK:
 					//noop
@@ -55,10 +68,10 @@ func (s *server) JoinChat(in *pb.JoinChatRequest, srv pb.ChatService_JoinChatSer
 			} else {
 				log.Print(response)
 			}
+
+			response.done <- struct{}{}
 		}
 	}
-
-	return nil
 }
 
 func (s *server) SendMessage(ctx context.Context, req *pb.SendMessageRequest) (*pb.EmptyResponse, error) {
@@ -69,11 +82,22 @@ func (s *server) SendMessage(ctx context.Context, req *pb.SendMessageRequest) (*
 			continue
 		}
 
-		conn <- &pb.MessageResponse{
+		ch := make(chan struct{})
+		_, span := otel.Tracer("server").Start(ctx, "Forward")
+
+		conn <- MessageResponse{
 			User:      req.User,
 			Message:   req.Message,
 			Timestamp: int32(time.Now().Unix()),
+			done: ch,
 		}
+
+		<-ch
+		span.End()
+
+		_, span = otel.Tracer("server").Start(ctx, "Wait")
+		time.Sleep(time.Millisecond)
+		span.End()
 	}
 
 	return &pb.EmptyResponse{}, nil
@@ -112,7 +136,7 @@ func main() {
 		grpc.StreamInterceptor(otelgrpc.StreamServerInterceptor()),
 	)
 	pb.RegisterChatServiceServer(s, &server{
-		conns: map[string]chan *pb.MessageResponse{},
+		conns: map[string]chan MessageResponse{},
 	})
 	log.Printf("server listening at %v", lis.Addr())
 	if err := s.Serve(lis); err != nil {
