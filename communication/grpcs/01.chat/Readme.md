@@ -2,7 +2,7 @@
 
 Implement a simple chat with client and server.
 
-The protobuf that defines the communication between themm
+The protobuf that defines the communication between them
 
 ```protobuf
 /* language version */
