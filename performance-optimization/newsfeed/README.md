@@ -1,4 +1,4 @@
-## Tracing
+## News Feed
 
 The tracing can help identify not only what is happening but also what is not happening when your program is running. We will use a simple program to learn how to navigate and read some of the tracing information you can find in the trace tool.
 
