@@ -21,3 +21,16 @@ validator := NewValidator()
 
 err := validator.Validate(user)
 ```
+
+
+## How to do it?
+
+Use `reflect` package.
+
+```go
+t := reflect.TypeOf(user)
+```
+
+The `t` has `t.Field(i)` method that returns the `i`th field. Every field has `field.Tag.Get(tagName)` method that returns parsed tag.
+
+To find out the number of fields in this type, you can use `t.NumField()` method.
