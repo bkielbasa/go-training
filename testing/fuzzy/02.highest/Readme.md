@@ -9,6 +9,7 @@ Write a fuzzy test for the HTTP handler `CalculateHighest`.
 To add values to the corpus us the `f.Add()` method. You can start with the following example:
 
 <details><summary>Tip 1</summary>
+
 ```go
 // Create a new server hosting our calculate func
 	srv := httptest.NewServer(http.HandlerFunc(CalculateHighest))
@@ -32,4 +33,5 @@ To add values to the corpus us the `f.Add()` method. You can start with the foll
 
 	}
 ```
+
 </details>
