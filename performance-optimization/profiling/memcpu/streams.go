@@ -1,8 +1,18 @@
+// All material is licensed under the Apache License Version 2.0, January 2004
+// http://www.apache.org/licenses/LICENSE-2.0
+
+// Sample program that takes a stream of bytes and looks for the bytes
+// “elvis” and when they are found, replace them with “Elvis”. The code
+// cannot assume that there are any line feeds or other delimiters in the
+// stream and the code must assume that the stream is of any arbitrary length.
+// The solution cannot meaningfully buffer to the end of the stream and
+// then process the replacement.
 package main
 
 import (
 	"bytes"
 	"fmt"
+	"io"
 )
 
 // data represents a table of input and expected output.
@@ -76,13 +86,13 @@ func algOne(data []byte, find []byte, repl []byte, output *bytes.Buffer) {
 	size := len(find)
 
 	// Declare the buffers we need to process the stream.
-	buf := make([]byte, 5)
+	// buf := make([]byte, 5)
+	buf := make([]byte, size)
 	end := size - 1
 
 	// Read in an initial number of bytes we need to get started.
-
-	// if n, err := io.ReadFull(input, buf[:end]); err != nil {
-	if n, err := input.Read(buf[:end]); err != nil {
+	// if n, err := input.Read(buf[:end]); err != nil {
+	if n, err := io.ReadFull(input, buf[:end]); err != nil {
 		output.Write(buf[:n])
 		return
 	}
@@ -90,11 +100,11 @@ func algOne(data []byte, find []byte, repl []byte, output *bytes.Buffer) {
 	for {
 
 		// Read in one byte from the input stream.
-		//
-		var err error
-		buf[end:][0], err = input.ReadByte()
-		if err != nil {
-			// if _, err := io.ReadFull(input, buf[end:]); err != nil {
+		// var err error
+		// buf[end:][0], err = input.ReadByte()
+		// if err != nil {
+		if _, err := io.ReadFull(input, buf[end:]); err != nil {
+
 			// Flush the reset of the bytes we have.
 			output.Write(buf[:end])
 			return
@@ -105,8 +115,8 @@ func algOne(data []byte, find []byte, repl []byte, output *bytes.Buffer) {
 			output.Write(repl)
 
 			// Read a new initial number of bytes.
-			// if n, err := io.ReadFull(input, buf[:end]); err != nil {
-			if n, err := input.Read(buf[:end]); err != nil {
+			// if n, err := input.Read(buf[:end]); err != nil {
+			if n, err := io.ReadFull(input, buf[:end]); err != nil {
 				output.Write(buf[:n])
 				return
 			}
