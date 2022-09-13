@@ -14,5 +14,7 @@ func FuzzEqual(f *testing.F) {
 </details>
 
 <details><summary>Tip 2</summary>
+
 You can shorten the fuzzy test execution time using `-fuzztime=5s` attribute.
+
 </details>
