@@ -7,6 +7,8 @@ There's a `Equal` function that checks if two byte arrays are equal. Check its c
 
 ```go
 func FuzzEqual(f *testing.F) {
+  f.Fuzz(func(t *testing.T, b1, b2 []byte) {
+  })
 }
 
 ```
