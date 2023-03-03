@@ -3,10 +3,10 @@ package service
 import (
 	"expvar"
 	"fmt"
+	"go-training/performance-optimization/project/search"
 	"html/template"
 	"net/http"
 
-	"github.com/ardanlabs/gotraining/topics/go/profiling/project/search"
 	"github.com/pborman/uuid"
 )
 
