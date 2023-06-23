@@ -10,6 +10,7 @@ require (
 require (
 	github.com/braintree/manners v0.0.0-20160418043613-82a8879fc5fd // indirect
 	github.com/google/uuid v1.3.0 // indirect
+	github.com/lib/pq v1.10.9
 	github.com/patrickmn/go-cache v2.1.0+incompatible // indirect
 	github.com/pborman/uuid v1.2.1 // indirect
 )
