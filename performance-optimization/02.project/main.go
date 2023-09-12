@@ -12,7 +12,7 @@ import (
 	"runtime"
 	"time"
 
-	"github.com/ardanlabs/gotraining/topics/go/profiling/project/service"
+	"go-training/performance-optimization/02.project/service"
 )
 
 // init is called before main. We are using init to

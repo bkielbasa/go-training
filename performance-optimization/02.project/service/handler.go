@@ -3,7 +3,7 @@ package service
 import (
 	"expvar"
 	"fmt"
-	"go-training/performance-optimization/project/search"
+	"go-training/performance-optimization/02.project/search"
 	"html/template"
 	"net/http"
 
