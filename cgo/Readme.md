@@ -15,4 +15,4 @@ str := "lorem ipsum"
 cStr := C.CString(str)
 ```
 
-There's already implemented C `void print_string(char* a)` function. Your task is to call it from Go code
+There's already implemented C `void print_string(char* a)` function. Your task is to call it from Go code.
