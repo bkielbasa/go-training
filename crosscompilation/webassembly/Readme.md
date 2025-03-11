@@ -15,7 +15,7 @@ python3 -m http.server
 Copy the wasm file
 
 ```sh
-cp GO/PATH/misc/wasm/wasm_exec.js .
+cp GO/PATH/lib/wasm/wasm_exec.js .
 ```
 
 and go to http://localhost:8000.
